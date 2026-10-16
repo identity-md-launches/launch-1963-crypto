@@ -10,7 +10,7 @@
   },
   "accountingAndSecurity": {
     "command": "npm test",
-    "passed": 29,
+    "passed": 35,
     "failed": 0,
     "randomizedPartialSettlementCases": 250
   },
@@ -99,22 +99,22 @@
     "liveMarket": {
       "BTC": {
         "hasPrice": true,
-        "at": "2026-10-16T10:55:43.000Z",
+        "at": "2026-10-16T11:22:50.000Z",
         "error": null
       },
       "ETH": {
         "hasPrice": true,
-        "at": "2026-10-16T10:55:48.000Z",
+        "at": "2026-10-16T11:22:50.000Z",
         "error": null
       },
       "BNB": {
         "hasPrice": true,
-        "at": "2026-10-16T10:55:43.000Z",
+        "at": "2026-10-16T11:22:38.000Z",
         "error": null
       },
       "SOL": {
         "hasPrice": true,
-        "at": "2026-10-16T10:55:43.000Z",
+        "at": "2026-10-16T11:22:50.000Z",
         "error": null
       }
     }
@@ -125,14 +125,14 @@
         "name": "render",
         "passed": true,
         "exitCode": 0,
-        "durationMs": 10196,
+        "durationMs": 10609,
         "output": "renders, no script errors or missing local files"
       },
       {
         "name": "layout",
         "passed": true,
         "exitCode": 0,
-        "durationMs": 0,
+        "durationMs": 1,
         "output": "no horizontal scroll at 320, 390 or 1440\nno text box overlaps another\nno floating control covers text\nno text cut off by overflow: hidden"
       },
       {
@@ -209,8 +209,8 @@
         "name": "copy-budget",
         "passed": true,
         "exitCode": 0,
-        "durationMs": 0,
-        "output": "prose on the first screen: 0 words at 390 (bar 60), 0 at 1440 (bar 90)\nall words on the first screen: 50 at 390, 83 at 1440\nwhole page: 200 words, 0 of them prose"
+        "durationMs": 1,
+        "output": "prose on the first screen: 0 words at 390 (bar 60), 0 at 1440 (bar 90)\nall words on the first screen: 48 at 390, 83 at 1440\nwhole page: 200 words, 0 of them prose"
       },
       {
         "name": "chrome",
@@ -230,7 +230,7 @@
         "name": "share",
         "passed": true,
         "exitCode": 0,
-        "durationMs": 1,
+        "durationMs": 0,
         "output": "title \"拾账 · Crypto 投资账本\", favicon, og:title, og:image, description"
       }
     ]
@@ -240,5 +240,164 @@
     "No physical mobile device or screen-reader session",
     "200% root font tested; native browser zoom not tested",
     "No production HTTPS deployment or long-term storage endurance test"
-  ]
+  ],
+  "revision": {
+    "before": {
+      "mode": "before-fix",
+      "checks": {
+        "csv": {
+          "preview": "新增 1 条 · 重复跳过 1 条账务校验通过，尚未导入",
+          "entries": 1,
+          "quantity": "1000",
+          "net": "1000",
+          "repeatedPreview": "新增 0 条 · 重复跳过 2 条账务校验通过，尚未导入"
+        },
+        "stale-password": {
+          "error": "",
+          "unchanged": false,
+          "entries": 2,
+          "quantity": "2000"
+        },
+        "stale-create": {
+          "error": "",
+          "preserved": false
+        },
+        "project-hint": {
+          "initialHint": [
+            "项目剩余成本：6 SOL；占用 0。编辑历史流水将重新计算后续结算。"
+          ],
+          "ethHint": [
+            "项目剩余成本：6 SOL；占用 0。编辑历史流水将重新计算后续结算。"
+          ],
+          "newHint": [
+            "项目剩余成本：6 SOL；占用 0。编辑历史流水将重新计算后续结算。"
+          ],
+          "newHintVisible": true,
+          "newFieldsVisible": true,
+          "beforeTop": 341.34375
+        },
+        "dashboard-copy": {
+          "subtitle": "投入有记录，收益有依据。"
+        },
+        "price-timer": {
+          "counts": [
+            {
+              "seconds": 45,
+              "requests": 0
+            },
+            {
+              "seconds": 90,
+              "requests": 0
+            },
+            {
+              "seconds": 135,
+              "requests": 0
+            },
+            {
+              "seconds": 180,
+              "requests": 0
+            },
+            {
+              "seconds": 239,
+              "requests": 0
+            }
+          ]
+        }
+      },
+      "errors": []
+    },
+    "after": {
+      "mode": "regression",
+      "checks": {
+        "csv": {
+          "preview": "新增 2 条 · 重复跳过 0 条账务校验通过，尚未导入",
+          "entries": 2,
+          "quantity": "2000",
+          "net": "2000",
+          "repeatedPreview": "新增 0 条 · 重复跳过 2 条账务校验通过，尚未导入"
+        },
+        "stale-password": {
+          "error": "账本已在另一个标签页更改。请锁定并重新解锁，再重试本次操作。",
+          "unchanged": true,
+          "entries": 3,
+          "quantity": "2300"
+        },
+        "password-retry": {
+          "entries": 3,
+          "quantity": "2300",
+          "oldPasswordRejected": true
+        },
+        "queued-password": {
+          "entries": 4,
+          "quantity": "3000",
+          "rejectedAfterLockAcquired": true
+        },
+        "stale-create": {
+          "error": "本机账本已在另一个标签页创建。请刷新页面并解锁已有账本。",
+          "preserved": true
+        },
+        "project-hint": {
+          "initialHint": [
+            "项目剩余成本：6 SOL；占用 0。编辑历史流水将重新计算后续结算。"
+          ],
+          "ethHint": [
+            "项目剩余成本：0；占用 2 ETH。编辑历史流水将重新计算后续结算。"
+          ],
+          "newHint": [],
+          "newHintVisible": false,
+          "newFieldsVisible": true,
+          "beforeTop": 341.34375
+        },
+        "dashboard-copy": {
+          "subtitle": "持仓与估值为当前数据；已结算盈亏和净入金可按日期筛选。"
+        },
+        "price-timer": {
+          "counts": [
+            {
+              "seconds": 45,
+              "requests": 0
+            },
+            {
+              "seconds": 90,
+              "requests": 1
+            },
+            {
+              "seconds": 135,
+              "requests": 2
+            },
+            {
+              "seconds": 180,
+              "requests": 3
+            },
+            {
+              "seconds": 239,
+              "requests": 3
+            }
+          ]
+        },
+        "price-disabled": {
+          "requests": 3
+        },
+        "price-reschedule": {
+          "interval": 2,
+          "requests": 4,
+          "unchangedSettingsAndManualPriceKeptDeadline": true
+        }
+      },
+      "errors": []
+    },
+    "csvRegressionTests": {
+      "before": {
+        "passed": 3,
+        "failed": 3
+      },
+      "after": {
+        "passed": 6,
+        "failed": 0
+      }
+    },
+    "scope": "Five reported findings, without changing accounting formulas or data schema",
+    "browser": "Chromium",
+    "priceTimer": "Playwright virtual clock with mocked market responses"
+  }
 }

@@ -440,7 +440,9 @@ export function previewCSV(
         fp = fingerprint(entry);
       if (old && fingerprint(old) !== fp)
         throw new Error("流水ID已存在但内容不同，请在应用中编辑原记录");
-      if (old || fingerprints.has(fp)) {
+      // Explicit IDs identify distinct transactions, even when all amounts match.
+      // Only rows without a supplied ID fall back to matching their contents.
+      if (old || (!get("id") && fingerprints.has(fp))) {
         duplicates++;
         status.status = "重复，跳过";
       } else {

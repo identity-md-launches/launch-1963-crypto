@@ -8,7 +8,7 @@ import { refreshPrices } from "./prices.js";
 import { autoMapping, csvTemplate, exportCSV, parseCSV, previewCSV, } from "./csv.js";
 import { btn, defaultFilters, dialogHead, entryAmount, entryName, esc, usd, } from "./ui.js";
 import { fullProject, metricDetail, pageNames, projectDetail, shell, } from "./views.js";
-import { entryForm, importForm, manualPriceForm, projectForm, restoreForm, vaultForm, } from "./forms.js";
+import { entryForm, projectBalanceHint, importForm, manualPriceForm, projectForm, restoreForm, vaultForm, } from "./forms.js";
 const app = document.querySelector("#app");
 const modal = document.querySelector("#modal");
 const DEMO_KEY = "shizhang.demo.v1";
@@ -123,6 +123,9 @@ async function commit(next, message, closeAfter = true) {
     if (saving)
         throw new Error("正在保存，请稍后再试");
     assertBook(next);
+    const priceScheduleChanged = next.id !== s.book.id ||
+        next.settings.auto !== s.book.settings.auto ||
+        next.settings.interval !== s.book.settings.interval;
     saving = true;
     modal
         .querySelectorAll('button[type="submit"]')
@@ -148,7 +151,8 @@ async function commit(next, message, closeAfter = true) {
             close();
         render();
         notify(message);
-        setupPriceTimer();
+        if (priceScheduleChanged)
+            setupPriceTimer();
     }
     finally {
         saving = false;
@@ -449,8 +453,11 @@ async function handleVault(form) {
     }
     if (get("password") !== get("confirm"))
         throw new Error("两次口令不一致，请重新输入");
-    const newSession = await makeSession(get("password"));
-    newSession.previous = localStorage.getItem(VAULT_KEY);
+    if (mode === "change" && (s.demo || !session))
+        throw new Error("请先解锁个人账本，再更改口令");
+    // Keep the version belonging to this in-memory book, before any async work.
+    // A new vault must still have no predecessor when saveVault holds the lock.
+    const previous = mode === "change" ? session.previous : null;
     const book = mode === "change" ? structuredClone(s.book) : emptyBook();
     if (mode === "create")
         book.name = get("name");
@@ -458,7 +465,10 @@ async function handleVault(form) {
     if (mode === "change")
         audit(book, "更改加密口令", book.id, null, null);
     saving = true;
+    let newSession;
     try {
+        newSession = await makeSession(get("password"));
+        newSession.previous = previous;
         await saveVault(book, newSession);
     }
     finally {
@@ -476,7 +486,8 @@ async function handleVault(form) {
     lastActivity = Date.now();
     close();
     render();
-    setupPriceTimer();
+    if (mode !== "change")
+        setupPriceTimer();
     notify(mode === "change"
         ? "口令已更新，请下载新的加密备份"
         : "私密账本已创建，从期初余额或入金开始");
@@ -811,6 +822,11 @@ document.addEventListener("change", (event) => {
         const group = modal.querySelector("#new-project-fields");
         if (group)
             group.hidden = input.value !== "new";
+        const hint = modal.querySelector("#project-balance-hint");
+        if (hint) {
+            hint.textContent = projectBalanceHint(s.book, input.value);
+            hint.hidden = !hint.textContent;
+        }
     }
     if (["costAsset", "recoveryAsset", "feeAsset"].includes(input.name)) {
         const price = modal.querySelector(`[name="${input.name.replace("Asset", "Price")}"]`);

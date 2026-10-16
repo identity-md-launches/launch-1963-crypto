@@ -71,7 +71,9 @@ export async function saveVault(book, session) {
     const encoded = await seal(book, session);
     const write = () => {
         if (localStorage.getItem(VAULT_KEY) !== session.previous)
-            throw new Error("账本已在另一个标签页更改。请锁定并重新解锁，再重试本次录入。");
+            throw new Error(session.previous === null
+                ? "本机账本已在另一个标签页创建。请刷新页面并解锁已有账本。"
+                : "账本已在另一个标签页更改。请锁定并重新解锁，再重试本次操作。");
         try {
             if (session.previous)
                 localStorage.setItem(PREVIOUS_KEY, session.previous);

@@ -38,6 +38,14 @@ function moneyGroup(
   const a = m?.asset ?? "USD";
   return `<fieldset class="money-group"><legend>${label}</legend><div class="form-grid money-inputs">${select("币种", prefix + "Asset", assetOptions(a))}${amountField("数量（可留空）", prefix + "Qty", m?.qty ?? "")}${amountField("当时 USD 单价", prefix + "Price", m ? (m.price ?? "") : a === "USD" ? "1" : "", a === "USD" ? "readonly" : "")}</div><div class="field-help">${prefix === "cost" ? "实际花出，从余额扣减。" : prefix === "recovery" ? "实际到账总额，含本金与利润。" : "额外扣减一次；数量不得已含此费用。"}历史价格缺失可留空，盈亏显示待补充。${btn("使用当前价格", "snapshot-price", "text-button", `data-prefix="${prefix}"`)}</div><span class="sr-only">当前 ${a} 单价 ${esc(book.prices[a].value ?? "未设置")}</span></fieldset>`;
 }
+export function projectBalanceHint(book: Book, projectId: string): string {
+  const p = calculate(book).projects.find((p) => p.project.id === projectId);
+  if (!p) return "";
+  const remaining = ASSETS.filter((a) => p.remaining[a] > 0n)
+    .map((a) => str(p.remaining[a]) + " " + a)
+    .join(" / ") || "0";
+  return `项目剩余成本：${remaining}；占用 ${p.reserve ? `${p.reserve.qty} ${p.reserve.asset}` : "0"}。编辑历史流水将重新计算后续结算。`;
+}
 export function entryForm(
   book: Book,
   kind: EntryKind,
@@ -68,17 +76,9 @@ export function entryForm(
   let body = "";
   if (kind === "investment") {
     const selected = e.projectId || book.projects[0]?.id || "new";
-    const p = calculate(book).projects.find((p) => p.project.id === selected);
+    const hint = projectBalanceHint(book, selected);
     body = `<div class="form-grid">${select("所属项目", "projectId", book.projects.map((p) => option(p.id, p.name, selected)).join("") + option("new", "+ 新建项目", selected))}${field("发生 / 结算日期", "date", date, "date", "required")}</div><div id="new-project-fields" ${selected === "new" ? "" : "hidden"}><div class="form-grid">${field("新项目名称", "newProjectName", "", "text", 'maxlength="120"')}${field("分类", "newCategory", "生态投资", "text", 'list="categories" maxlength="80"')}</div></div><datalist id="categories"><option>生态投资</option><option>NFT</option><option>空投</option><option>打新</option><option>质押 / 锁仓</option><option>其他</option></datalist>
-    ${
-      p
-        ? `<p class="field-help">项目剩余成本：${
-            ASSETS.filter((a) => p.remaining[a] > 0n)
-              .map((a) => str(p.remaining[a]) + " " + a)
-              .join(" / ") || "0"
-          }；占用 ${p.reserve ? `${p.reserve.qty} ${p.reserve.asset}` : "0"}。编辑历史流水将重新计算后续结算。</p>`
-        : ""
-    }
+    <p id="project-balance-hint" class="field-help" aria-live="polite" ${hint ? "" : "hidden"}>${esc(hint)}</p>
     ${moneyGroup("实际投入", "cost", e.cost, book)}${moneyGroup("实际回收", "recovery", e.recovery, book)}
     <details class="form-section" ${e.recovery || e.release.length ? "open" : ""}><summary>本次结转成本 <span>部分退出、结束或损失核销时填写</span></summary><p class="field-help">填写本次回款对应的原投入数量，不会再次扣余额。留空表示本次不结转该币种本金。纯收益回款可全部留空。</p><div class="release-grid">${ASSETS.map((a) => amountField(a, "release" + a, e.release.find((r) => r.asset === a)?.qty ?? "")).join("")}</div>${btn("填入结转前全部剩余成本", "release-all", "text-button")}</details>
     <fieldset class="snapshot-fields"><legend>项目剩余权益</legend><div class="snapshot-row">${checkbox("更新占用总量", "updateReserve", !!e.reserve)}<div class="form-grid">${select("占用币种", "reserveAsset", assetOptions(e.reserve?.asset ?? "USD"))}${amountField("项目占用总数量", "reserveQty", e.reserve?.qty ?? "0")}</div><p class="field-help">这是更新后的总量，填 0 解锁；只减少可用余额。与实际成本为同一笔本金时，请勿再次占用。</p>${checkbox("本次投入与占用为不同资金（同时填写时确认）", "independentCapital", false)}</div><div class="snapshot-row">${checkbox("更新剩余未结算估值", "updateValuation", !!e.valuation || !entry)}<div class="form-grid">${select("估值币种", "valuationAsset", assetOptions(e.valuation?.asset ?? e.cost?.asset ?? "USD"))}${amountField("剩余估值（空 = 未知）", "valuationQty", e.valuation?.qty ?? "")}</div><p class="field-help">仅填写未到账权益；0 表示确认无价值，留空表示未知。部分回款必须更新此项，已回收的资金不要留在估值中。占用资金已在持仓，不要再填入估值。</p></div></fieldset>
@@ -161,7 +161,7 @@ export function importForm(
           )
           .join(
             "",
-          )}</tbody></table></div><p class="field-help">预览最多显示前 200 行，校验与导入覆盖全部行；重复按 ID 或完整流水内容识别。请先核对源数据，避免将同笔出入金另作投资回款。</p><div class="dialog-actions">${btn("取消", "close", "secondary")}${btn("确认导入", "confirm-import", "primary", result.errors.length ? "disabled" : "")}</div>`
+          )}</tbody></table></div><p class="field-help">预览最多显示前 200 行，校验与导入覆盖全部行；有流水 ID 时按 ID 去重，只有未提供 ID 时才按完整流水内容去重。请先核对源数据，避免将同笔出入金另作投资回款。</p><div class="dialog-actions">${btn("取消", "close", "secondary")}${btn("确认导入", "confirm-import", "primary", result.errors.length ? "disabled" : "")}</div>`
       : ""
   }<div id="form-error" class="form-error" role="alert" tabindex="-1" hidden></div>`;
 }
