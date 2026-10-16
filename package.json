@@ -1,0 +1,20 @@
+{
+  "name": "crypto-ledger",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "拾账 · 本地加密的个人 Crypto 投资账本",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "node scripts/clean.mjs && tsc && node scripts/build.mjs",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "preview": "node scripts/serve.mjs",
+    "serve:private": "node scripts/serve.mjs --auth"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

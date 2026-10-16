@@ -1,0 +1,301 @@
+{
+  "schema": 1,
+  "id": "demo-book",
+  "name": "演示投资账本",
+  "revision": 0,
+  "projects": [
+    {
+      "id": "p1",
+      "name": "Solana 生态探索",
+      "category": "生态投资",
+      "account": "主账户",
+      "notes": "此项目为虚构演示，仅用于体验账务流程。",
+      "related": null,
+      "createdAt": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "id": "p2",
+      "name": "ETH 节点计划",
+      "category": "质押 / 锁仓",
+      "account": "冷钱包",
+      "notes": "此项目为虚构演示，仅用于体验账务流程。",
+      "related": null,
+      "createdAt": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "id": "p3",
+      "name": "数字艺术收藏",
+      "category": "NFT",
+      "account": "主账户",
+      "notes": "此项目为虚构演示，仅用于体验账务流程。",
+      "related": null,
+      "createdAt": "2026-10-01T00:00:00.000Z"
+    },
+    {
+      "id": "p4",
+      "name": "新项目认购",
+      "category": "打新",
+      "account": "交易账户",
+      "notes": "此项目为虚构演示，仅用于体验账务流程。",
+      "related": null,
+      "createdAt": "2026-10-01T00:00:00.000Z"
+    }
+  ],
+  "entries": [
+    {
+      "id": "open-BTC",
+      "date": "2026-09-01",
+      "createdAt": "2026-10-16T10:48:10.769Z",
+      "account": "主账户",
+      "note": "",
+      "deleted": false,
+      "kind": "opening",
+      "asset": "BTC",
+      "qty": "0.18",
+      "reason": "演示期初余额"
+    },
+    {
+      "id": "open-ETH",
+      "date": "2026-09-01",
+      "createdAt": "2026-10-16T10:48:10.769Z",
+      "account": "主账户",
+      "note": "",
+      "deleted": false,
+      "kind": "opening",
+      "asset": "ETH",
+      "qty": "4.5",
+      "reason": "演示期初余额"
+    },
+    {
+      "id": "open-BNB",
+      "date": "2026-09-01",
+      "createdAt": "2026-10-16T10:48:10.769Z",
+      "account": "主账户",
+      "note": "",
+      "deleted": false,
+      "kind": "opening",
+      "asset": "BNB",
+      "qty": "6",
+      "reason": "演示期初余额"
+    },
+    {
+      "id": "open-SOL",
+      "date": "2026-09-01",
+      "createdAt": "2026-10-16T10:48:10.769Z",
+      "account": "主账户",
+      "note": "",
+      "deleted": false,
+      "kind": "opening",
+      "asset": "SOL",
+      "qty": "42",
+      "reason": "演示期初余额"
+    },
+    {
+      "id": "cash1",
+      "date": "2026-09-03",
+      "createdAt": "2026-10-16T10:48:10.769Z",
+      "account": "",
+      "note": "虚构法币入金",
+      "deleted": false,
+      "kind": "cash",
+      "direction": "in",
+      "fiat": "CNY",
+      "fiatAmount": "71000",
+      "usdAmount": "10000",
+      "rate": "7.1",
+      "fee": "0",
+      "payment": "USD",
+      "paymentAmount": "10000"
+    },
+    {
+      "id": "i1",
+      "date": "2026-09-10",
+      "createdAt": "2026-10-16T10:48:10.769Z",
+      "account": "",
+      "note": "",
+      "deleted": false,
+      "kind": "investment",
+      "projectId": "p1",
+      "cost": {
+        "asset": "SOL",
+        "qty": "12",
+        "price": "140"
+      },
+      "recovery": null,
+      "release": [],
+      "fee": null,
+      "feeTreatment": "cost",
+      "reserve": null,
+      "valuation": {
+        "asset": "SOL",
+        "qty": "14.2"
+      },
+      "projectState": null
+    },
+    {
+      "id": "i2",
+      "date": "2026-10-06",
+      "createdAt": "2026-10-16T10:48:10.769Z",
+      "account": "",
+      "note": "",
+      "deleted": false,
+      "kind": "investment",
+      "projectId": "p1",
+      "cost": null,
+      "recovery": {
+        "asset": "SOL",
+        "qty": "7.2",
+        "price": "150"
+      },
+      "release": [
+        {
+          "asset": "SOL",
+          "qty": "6"
+        }
+      ],
+      "fee": null,
+      "feeTreatment": "settlement",
+      "reserve": null,
+      "valuation": {
+        "asset": "SOL",
+        "qty": "7.8"
+      },
+      "projectState": null
+    },
+    {
+      "id": "i3",
+      "date": "2026-09-15",
+      "createdAt": "2026-10-16T10:48:10.769Z",
+      "account": "",
+      "note": "",
+      "deleted": false,
+      "kind": "investment",
+      "projectId": "p2",
+      "cost": null,
+      "recovery": null,
+      "release": [],
+      "fee": null,
+      "feeTreatment": "cost",
+      "reserve": {
+        "asset": "ETH",
+        "qty": "2"
+      },
+      "valuation": null,
+      "projectState": null
+    },
+    {
+      "id": "i4",
+      "date": "2026-09-18",
+      "createdAt": "2026-10-16T10:48:10.769Z",
+      "account": "",
+      "note": "",
+      "deleted": false,
+      "kind": "investment",
+      "projectId": "p3",
+      "cost": {
+        "asset": "ETH",
+        "qty": "0.5",
+        "price": "2500"
+      },
+      "recovery": null,
+      "release": [],
+      "fee": null,
+      "feeTreatment": "cost",
+      "reserve": null,
+      "valuation": {
+        "asset": "USD",
+        "qty": "980"
+      },
+      "projectState": null
+    },
+    {
+      "id": "i5",
+      "date": "2026-10-01",
+      "createdAt": "2026-10-16T10:48:10.769Z",
+      "account": "",
+      "note": "",
+      "deleted": false,
+      "kind": "investment",
+      "projectId": "p4",
+      "cost": {
+        "asset": "USD",
+        "qty": "1800",
+        "price": "1"
+      },
+      "recovery": null,
+      "release": [],
+      "fee": null,
+      "feeTreatment": "cost",
+      "reserve": null,
+      "valuation": {
+        "asset": "USD",
+        "qty": "1800"
+      },
+      "projectState": null
+    },
+    {
+      "id": "i6",
+      "date": "2026-10-12",
+      "createdAt": "2026-10-16T10:48:10.769Z",
+      "account": "",
+      "note": "",
+      "deleted": false,
+      "kind": "investment",
+      "projectId": "p4",
+      "cost": null,
+      "recovery": {
+        "asset": "USD",
+        "qty": "2160",
+        "price": "1"
+      },
+      "release": [
+        {
+          "asset": "USD",
+          "qty": "1800"
+        }
+      ],
+      "fee": null,
+      "feeTreatment": "settlement",
+      "reserve": null,
+      "valuation": null,
+      "projectState": "closed"
+    }
+  ],
+  "prices": {
+    "BTC": {
+      "value": "67420",
+      "at": "2026-10-15T08:00:00.000Z",
+      "source": "demo",
+      "error": null
+    },
+    "ETH": {
+      "value": "2640",
+      "at": "2026-10-15T08:00:00.000Z",
+      "source": "demo",
+      "error": null
+    },
+    "BNB": {
+      "value": "588",
+      "at": "2026-10-15T08:00:00.000Z",
+      "source": "demo",
+      "error": null
+    },
+    "SOL": {
+      "value": "156.8",
+      "at": "2026-10-15T08:00:00.000Z",
+      "source": "demo",
+      "error": null
+    },
+    "USD": {
+      "value": "1",
+      "at": "2026-10-15T08:00:00.000Z",
+      "source": "demo",
+      "error": null
+    }
+  },
+  "settings": {
+    "interval": 5,
+    "auto": false
+  },
+  "audit": []
+}
